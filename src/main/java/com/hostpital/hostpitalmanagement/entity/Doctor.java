@@ -2,9 +2,7 @@ package com.hostpital.hostpitalmanagement.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,7 +12,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,9 +54,9 @@ public class Doctor {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "doctors")
-    @Builder.Default
-    private Set<Department> departments = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
 
     @OneToMany(mappedBy = "doctor")
     @Builder.Default
