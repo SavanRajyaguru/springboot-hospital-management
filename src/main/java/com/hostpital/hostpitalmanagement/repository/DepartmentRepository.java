@@ -7,5 +7,7 @@ import com.hostpital.hostpitalmanagement.entity.Department;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-    // Add custom query methods if needed
+    boolean existsByName(String name);
+    
+    boolean existsByNameAndIdNot(String name, Long id);
 }

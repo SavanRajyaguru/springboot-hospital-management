@@ -17,10 +17,12 @@ public interface DoctorMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "department", ignore = true)
     @Mapping(target = "appointments", ignore = true)
+    @Mapping(target = "contactNumber", source = "phoneNumber")
     Doctor toEntity(DoctorRequestDTO dto);
 
     @Mapping(target = "departmentId", source = "department.id")
     @Mapping(target = "departmentName", source = "department.name")
+    @Mapping(target = "phoneNumber", source = "contactNumber")
     DoctorResponseDTO toDto(Doctor entity);
 
     @Mapping(target = "id", ignore = true)
@@ -28,5 +30,6 @@ public interface DoctorMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "department", ignore = true)
     @Mapping(target = "appointments", ignore = true)
+    @Mapping(target = "contactNumber", source = "phoneNumber")
     void updateEntity(DoctorRequestDTO dto, @MappingTarget Doctor entity);
 }

@@ -46,6 +46,18 @@ public class Doctor {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(length = 500)
+    private String qualifications;
+
+    @Column(length = 1000)
+    private String experience;
+
+    @Column(length = 50)
+    private String availableDays;
+
+    @Column(length = 20)
+    private String availableHours;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

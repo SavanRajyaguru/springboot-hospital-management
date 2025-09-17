@@ -12,7 +12,7 @@ import com.hostpital.hostpitalmanagement.dto.PaginatedResponse;
 import com.hostpital.hostpitalmanagement.entity.Department;
 import com.hostpital.hostpitalmanagement.entity.Doctor;
 import com.hostpital.hostpitalmanagement.exception.DuplicateResourceException;
-import com.hostpital.hostpitalmanagement.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import com.hostpital.hostpitalmanagement.mapper.DoctorMapper;
 import com.hostpital.hostpitalmanagement.repository.DepartmentRepository;
 import com.hostpital.hostpitalmanagement.repository.DoctorRepository;
@@ -38,7 +38,7 @@ public class DoctorServiceImpl implements DoctorService {
 
         // Verify department exists
         Department department = departmentRepository.findById(request.getDepartmentId())
-                .orElseThrow(() -> new ResourceNotFoundException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Department not found with id: " + request.getDepartmentId()));
 
         Doctor doctor = doctorMapper.toEntity(request);
@@ -52,7 +52,7 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorResponseDTO getDoctorById(Long id) {
         return doctorRepository.findById(id)
                 .map(doctorMapper::toDto)
-                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found with id: " + id));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorResponseDTO updateDoctor(Long id, DoctorRequestDTO request) {
         Doctor existingDoctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found with id: " + id));
 
         // Check if email is already in use by another doctor
         if (doctorRepository.existsByEmailAndIdNot(request.getEmail(), id)) {
@@ -88,7 +88,7 @@ public class DoctorServiceImpl implements DoctorService {
 
         // Verify department exists
         Department department = departmentRepository.findById(request.getDepartmentId())
-                .orElseThrow(() -> new ResourceNotFoundException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Department not found with id: " + request.getDepartmentId()));
 
         doctorMapper.updateEntity(request, existingDoctor);
@@ -100,7 +100,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void deleteDoctor(Long id) {
         if (!doctorRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Doctor not found with id: " + id);
+            throw new EntityNotFoundException("Doctor not found with id: " + id);
         }
         doctorRepository.deleteById(id);
     }
@@ -110,7 +110,7 @@ public class DoctorServiceImpl implements DoctorService {
     public PaginatedResponse<DoctorResponseDTO> getDoctorsByDepartment(Long departmentId, int page, int limit) {
         // Verify department exists
         if (!departmentRepository.existsById(departmentId)) {
-            throw new ResourceNotFoundException("Department not found with id: " + departmentId);
+            throw new EntityNotFoundException("Department not found with id: " + departmentId);
         }
 
         PageRequest pageRequest = PageRequest.of(page, limit);
